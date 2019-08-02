@@ -5,8 +5,6 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/sebastianwebber/app/model"
 )
 
@@ -43,19 +41,21 @@ func loadData(c *gin.Context) {
 	})
 }
 
-var (
-	populateDeptOpsCounter = promauto.NewCounter(prometheus.CounterOpts{
-		Name: "myapp_processed_ops_total",
-		Help: "The total number of processed events",
-	})
-	populateDeptErrCounter = promauto.NewCounter(prometheus.CounterOpts{
-		Name: "myapp_processed_err_total",
-		Help: "The total number of error events",
-	})
-)
+// TODO: enable monitoring
+// var (
+// 	populateDeptOpsCounter = promauto.NewCounter(prometheus.CounterOpts{
+// 		Name: "myapp_processed_ops_total",
+// 		Help: "The total number of processed events",
+// 	})
+// 	populateDeptErrCounter = promauto.NewCounter(prometheus.CounterOpts{
+// 		Name: "myapp_processed_err_total",
+// 		Help: "The total number of error events",
+// 	})
+// )
 
 func populateDept(maxRows int, deleteBefore bool) error {
-	defer populateDeptOpsCounter.Inc()
+	// TODO: enable monitoring
+	// defer populateDeptOpsCounter.Inc()
 
 	itens := []model.Department{}
 
@@ -64,7 +64,8 @@ func populateDept(maxRows int, deleteBefore bool) error {
 		_, err := dbConn.Model(&itens).Where("id >= 0").Delete()
 
 		if err != nil {
-			populateDeptErrCounter.Inc()
+			// TODO: enable monitoring
+			// populateDeptErrCounter.Inc()
 			return fmt.Errorf("Could not delete rows: %v", err)
 		}
 	}
@@ -77,7 +78,8 @@ func populateDept(maxRows int, deleteBefore bool) error {
 
 	err := dbConn.Insert(&itens)
 	if err != nil {
-		populateDeptErrCounter.Inc()
+		// TODO: enable monitoring
+		// populateDeptErrCounter.Inc()
 		return fmt.Errorf("Could not insert rows: %v", err)
 	}
 

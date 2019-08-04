@@ -1,0 +1,15 @@
+---
+groups:
+
+- name: basic-rules
+  rules:
+
+  - alert: exporter_down
+    expr: |
+      up == 0
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      description: '{{ $labels.exporter_name }} of {{ $labels.instance }} is down over 1 minute'
+      summary: 'Exporter down - {{ $labels.instance }}'

@@ -1,0 +1,59 @@
+# my global config
+global:
+  scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      # - alertmanager:9093
+
+
+
+
+rule_files:
+  - "/etc/prometheus/rules/*.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  
+  
+  - job_name:  prometheus
+    static_configs:
+      - targets: ['localhost:9090']
+        labels:
+          exporter_name: prom_exporter
+  
+  - job_name:  minha_app
+    static_configs:
+      - targets: ['docker.for.mac.localhost:8080']
+        labels:
+          exporter_name: app_exporter
+
+
+  # - job_name: prometheus
+  #   labels:
+  #     exporter_name: 'prom_exporter'
+  #   static_configs:
+  #   - targets: ['localhost:9090']
+
+    
+  - job_name: node
+    static_configs:
+    - targets: 
+      - '192.168.50.101:9100'
+      - '192.168.50.102:9100'
+      labels:
+        exporter_name: 'node_exporter'
+
+  - job_name: postgres
+    static_configs:
+    - targets: 
+      - '192.168.50.101:9187'
+      - '192.168.50.102:9187'
+      labels:
+        exporter_name: 'postgres_exporter'

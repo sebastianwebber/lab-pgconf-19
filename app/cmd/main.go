@@ -10,6 +10,7 @@ import (
 var (
 	connStr = &pg.Options{
 		User:     "seba",
+		Network:  "docker.for.mac.localhost:5432",
 		Password: "",
 		Database: "seba",
 	}
